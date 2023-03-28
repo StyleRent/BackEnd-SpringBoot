@@ -10,7 +10,7 @@
 <div align="center">
   <img src="https://user-images.githubusercontent.com/38793933/227194248-7c9a5eba-880e-47cc-a3ba-62d141f6b3e6.png" alt="logo" width="300px"/>
   
-  <h1>STYLERENT - 옷 대여 [백엔드]</h1>
+  <h1>STYLERENT - 옷 대여[백엔드]</h1>
   
 
 <h4>
