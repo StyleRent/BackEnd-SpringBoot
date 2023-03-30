@@ -29,14 +29,13 @@
 <!-- 목차 -->
 # :notebook_with_decorative_cover: 목차
 
-- [About the Project](#star2-about-the-project)
+- [About the Project](#book-documentaion)
   * [Screenshots](#camera-screenshots)
   * [Tech Stack](#space_invader-tech-stack)
   * [Features](#dart-features)
   * [Color Reference](#art-color-reference)
   * [Environment Variables](#key-environment-variables)
-- [Getting Started](#toolbox-getting-started)
-  * [Prerequisites](#bangbang-prerequisites)
+- [Documentation](#book-documentation)
   * [Installation](#gear-installation)
   * [Running Tests](#test_tube-running-tests)
   * [Run Locally](#running-run-locally)
@@ -50,3 +49,8 @@
 - [Contact](#handshake-contact)
 - [Acknowledgements](#gem-acknowledgements)
 
+
+## :book: Documentation
+
+### :gear: Installation
+* Java JDK -> 
