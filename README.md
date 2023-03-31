@@ -55,7 +55,7 @@
 ### :gear: Installation
 * Java JDK -> 18.0.1
 * Spring boot 3.0.5
-* <a href="https://www.jetbrains.com/ko-kr/community/education/#students">Intellij Idea Ultimate Version!</a>
+* <a href="https://www.jetbrains.com/ko-kr/community/education/#students">Intellij Idea Ultimate Version!</a> -> <a href="https://goddaehee.tistory.com/215"> 무료 설치 방법!!!! </a>
 * <a href="https://www.apachefriends.org/">XAMPP Local Web Server</a>
 * <a href="https://git-scm.com/">GIT</a>
 
