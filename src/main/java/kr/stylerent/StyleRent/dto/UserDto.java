@@ -16,9 +16,4 @@ public class UserDto {
     private String email;
     private String password;
 
-    public static UserDto createNewUserDto(User user) {
-        return new UserDto(
-                user.getUsername(), user.getEmail(), user.getPassword()
-        );
-    }
 }

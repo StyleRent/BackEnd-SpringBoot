@@ -21,10 +21,13 @@ public class UserController {
     public Map<String, Object> hi(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
+        User user1 = userRepository.findById(1).orElseThrow();
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("firstname", user.getUsername());
         userMap.put("email", user.getEmail());
         userMap.put("password", user.getPassword());
+        userMap.put("User find by id ->", user1.getId());
+        userMap.put("User find by id name ->", user1.getUsername());
         return userMap;
     }
 }
