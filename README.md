@@ -9,12 +9,10 @@
 ![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
 <div align="center">
   <img src="https://user-images.githubusercontent.com/38793933/227194248-7c9a5eba-880e-47cc-a3ba-62d141f6b3e6.png" alt="logo" width="300px"/>
-  
-  <h1>STYLERENT</h1>
+  <h1>STYLERENT - 옷 대여 [캡스톤 프로젝트]</h1>
   
 
 <h4>
-
     <a href="https://github.com/StyleRent/BackEnd-SpringBoot">View Demo</a>
   <span> · </span>
     <a href="https://github.com/Alisherka7/QuizThis_RestfulAPI_SpringBoot/blob/main/README.md">Documentation</a>
@@ -31,6 +29,7 @@
 # :notebook_with_decorative_cover: 목차
 
 - [About the Project](#book-documentaion)
+  * [Contributors](#student-contributors)
   * [Screenshots](#camera-screenshots)
   * [Tech Stack](#space_invader-tech-stack)
   * [Features](#dart-features)
@@ -43,12 +42,38 @@
   * [Deployment](#triangular_flag_on_post-deployment)
 - [Usage](#eyes-usage)
 - [Roadmap](#compass-roadmap)
-- [Contributing](#wave-contributing)
+- [Contributing](#wave-contributing) 
   * [Code of Conduct](#scroll-code-of-conduct)
 - [FAQ](#grey_question-faq)
 - [License](#warning-license)
 - [Contact](#handshake-contact)
 - [Acknowledgements](#gem-acknowledgements)
+
+## :student: Contributors
+
+### BackEnd Developers!
+<table>
+  <tbody>
+    <tr>
+      <td align="center"><a href="https://github.com/Alisherka7"><img src="https://user-images.githubusercontent.com/38793933/230622299-8c1a7e93-eac6-4aea-8fe9-afd77f5f2a7a.png" width="100px;" alt="Kent C. Dodds"/><br /><sub><b>Alisherka7</b></sub></a></td>
+      <td align="center"><a href="https://github.com/ddabi"><img src="https://user-images.githubusercontent.com/38793933/230624263-14f9f6b9-66d4-472d-8dfb-5c799a816b6f.png" width="100px;" alt="ddabi"/><br /><sub><b>ddabi</b></sub></a></td>
+      <td align="center"><a href="https://github.com/seongbokim"><img src="https://user-images.githubusercontent.com/38793933/230624678-6835a23a-073e-476c-a51e-80f438d99531.png" width="100px;" alt="seongbokim"/><br /><sub><b>seongbokim</b></sub></a></td>
+      <td align="center"><a href="https://github.com/Cygnus49"><img src="https://user-images.githubusercontent.com/38793933/230622535-fe2fcd6d-d4ed-4cd6-9551-1a5fe49c6d14.png" width="100px;" alt="Kent C. Dodds"/><br /><sub><b>Cygnus49</b></sub></a></td>
+      </tr>
+   </tbody>
+</table>    
+
+### FrontEnd Developers 
+<table>
+  <tbody>
+       <tr>
+      <td align="center"><a href="https://github.com/Kumushai9919"><img src="https://user-images.githubusercontent.com/38793933/230624905-13f1f3df-aeaf-4134-92f5-d8aa27f97de2.png" width="100px;" alt="Kumushai9919"/><br /><sub><b>Kumushai9919</b></sub></a></td>
+      <td align="center"><a href="https://github.com/honghyoeun"><img src="https://user-images.githubusercontent.com/38793933/230625176-7a9e8bf2-9ef8-46e8-b6f9-4a35605f2147.png" width="100px;" alt="honghyoeun"/><br /><sub><b>honghyoeun</b></sub></a></td>
+      <td align="center"><a href="https://github.com/dixk3458"><img src="https://user-images.githubusercontent.com/38793933/230625300-23c0e68b-85fc-4407-82ad-cfef6fed9a94.png" width="100px;" alt="dixk3458"/><br /><sub><b>dixk3458</b></sub></a></td>
+      <td align="center"><a href="https://github.com/jimseokbea"><img src="https://user-images.githubusercontent.com/38793933/230625434-dfce7dbb-0b2f-46cb-a34d-f1cc8c7f7738.png" width="100px;" alt="jimseokbea"/><br /><sub><b>jimseokbea</b></sub></a></td>
+      </tr>
+  </tbody>
+</table>
 
 
 ## :book: Documentation
@@ -94,4 +119,6 @@
 
 4. 프로젝트 설정 과정은 끝났습니다. 
 
+
 <img width="413" alt="Screen Shot 2023-03-31 at 9 28 40" src="https://user-images.githubusercontent.com/38793933/228993237-afe1acab-6948-4b5d-a79d-1bd14768e732.png">
+
