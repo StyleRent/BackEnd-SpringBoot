@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RankController {
 
 
+
     private final RankService rankService;
 
 
@@ -24,5 +25,6 @@ public class RankController {
 
         return ResponseEntity.ok(rankService.setRank(request));
     }
+
 
 }
