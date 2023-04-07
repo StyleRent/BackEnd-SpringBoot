@@ -26,5 +26,4 @@ public class RankController {
         return ResponseEntity.ok(rankService.setRank(request));
     }
 
-
 }

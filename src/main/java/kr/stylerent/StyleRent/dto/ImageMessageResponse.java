@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ImageResponse {
-    private String name;
-    private String uri;
-    private String type;
+public class ImageMessageResponse {
+    private String message;
 }

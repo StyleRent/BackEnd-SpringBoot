@@ -1,9 +1,6 @@
 package kr.stylerent.StyleRent.controller;
 
-import kr.stylerent.StyleRent.dto.RankDto;
-import kr.stylerent.StyleRent.dto.RankResponse;
-import kr.stylerent.StyleRent.dto.UserDataDto;
-import kr.stylerent.StyleRent.dto.UserDataResponse;
+import kr.stylerent.StyleRent.dto.*;
 import kr.stylerent.StyleRent.entity.User;
 import kr.stylerent.StyleRent.entity.UserData;
 import kr.stylerent.StyleRent.repository.UserRepository;
@@ -19,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController

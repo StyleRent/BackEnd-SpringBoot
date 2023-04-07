@@ -23,7 +23,7 @@ public class ProfileImage {
     @Column
     private String type;
 
-    @Column
+    @Column(name = "data", columnDefinition="BLOB")
     @Lob
     private byte[] data;
 
