@@ -31,7 +31,7 @@
 - **개발 과정**
   * <a href="https://github.com/StyleRent/BackEnd-SpringBoot/blob/main/%EA%B0%9C%EB%B0%9C%20%EA%B3%BC%EC%A0%95/3%EC%A3%BC%20-%20%EB%A1%9C%EA%B7%B8%EC%9D%B8%20%EB%B0%8F%20%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85.md">4주 - 로그인 및 회원가입</a>
   * <a href="https://github.com/StyleRent/BackEnd-SpringBoot/blob/main/%EA%B0%9C%EB%B0%9C%20%EA%B3%BC%EC%A0%95/5%EC%A3%BC%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%9D%98%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EA%B4%80%EB%A6%AC.md">5주 - 사용자의 데이터 관리</a>
-  * [Tech Stack](#space_invader-tech-stack)
+  * <a href="https://github.com/StyleRent/BackEnd-SpringBoot/blob/main/%EA%B0%9C%EB%B0%9C%20%EA%B3%BC%EC%A0%95/6%EC%A3%BC%20-%20%EC%98%B7%EC%9E%A5%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EA%B4%80%EB%A6%AC">6주 - 옷장 데이터 관리</a>
   * [Features](#dart-features)
   * [Color Reference](#art-color-reference)
   * [Environment Variables](#key-environment-variables)
