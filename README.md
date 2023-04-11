@@ -28,6 +28,13 @@
 <!-- 목차 -->
 # :notebook_with_decorative_cover: 목차
 
+- [개발 과정]
+  * <a href="https://github.com/StyleRent/BackEnd-SpringBoot/blob/main/%EA%B0%9C%EB%B0%9C%20%EA%B3%BC%EC%A0%95/3%EC%A3%BC%20-%20%EB%A1%9C%EA%B7%B8%EC%9D%B8%20%EB%B0%8F%20%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85.md">3주 - 로그인 및 회원가입</a>
+  * [Screenshots](#camera-screenshots)
+  * [Tech Stack](#space_invader-tech-stack)
+  * [Features](#dart-features)
+  * [Color Reference](#art-color-reference)
+  * [Environment Variables](#key-environment-variables)
 - [About the Project](#book-documentaion)
   * [Contributors](#student-contributors)
   * [Screenshots](#camera-screenshots)
