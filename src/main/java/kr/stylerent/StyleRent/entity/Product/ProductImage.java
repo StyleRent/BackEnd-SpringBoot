@@ -15,8 +15,9 @@ import lombok.NoArgsConstructor;
 public class ProductImage {
     @Id
     @GeneratedValue
-    private Integer imageid;
+    private Integer imageid; // 1,2,3,4,5,6,7
 
-
+    @Column
+    private Product product; // 1
 
 }

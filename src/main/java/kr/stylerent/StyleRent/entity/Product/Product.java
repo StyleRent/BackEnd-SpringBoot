@@ -15,6 +15,6 @@ import lombok.NoArgsConstructor;
 public class Product {
     @Id
     @GeneratedValue
-    private Integer productid;
+    private Integer productid; // 1 -
 
 }

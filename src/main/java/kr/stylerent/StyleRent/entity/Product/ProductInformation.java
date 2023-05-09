@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class ProductInformation {
     @Id
     @Column(name = "productid")
-    private Integer id;
+    private Integer id; // 1
 
     @OneToOne
     @MapsId
