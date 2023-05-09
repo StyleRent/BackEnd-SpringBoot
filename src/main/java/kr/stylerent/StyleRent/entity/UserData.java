@@ -25,4 +25,9 @@ public class UserData {
     @JoinColumn(name = "userdataid")
     private User user;
 
+    public void updatePhoneNumber(String phonenumber,User user){
+        this.phonenumber = phonenumber;
+        this.user = user;
+    }
+
 }

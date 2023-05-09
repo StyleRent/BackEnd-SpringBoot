@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 public class RankController {
-
-
-
     private final RankService rankService;
 
 
@@ -22,8 +19,6 @@ public class RankController {
     public ResponseEntity<RankResponse> setrank(
             @RequestBody RankDto request
     ) {
-
         return ResponseEntity.ok(rankService.setRank(request));
     }
-
 }

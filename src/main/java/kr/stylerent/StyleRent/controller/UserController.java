@@ -42,12 +42,12 @@ public class UserController {
         return userMap;
     }
 
-    @PostMapping("/api/v1/setuserdata")
-    public ResponseEntity<UserDataResponse> setUserData(
+    @PostMapping("/api/v1/updateuser")
+    public ResponseEntity<UserDataUpdateResponseMessage> setUserData(
             @RequestBody UserDataDto request
     ) {
 
-        return ResponseEntity.ok(userDataService.setPhoneNumber(request));
+        return ResponseEntity.ok(userDataService.updateUserData(request));
     }
 
     @GetMapping("/api/v1/getuserdata")

@@ -32,32 +32,13 @@ public class UserImageController {
         try {
             userImageService.store(image);
 
-            message = "Uploaded the file successfully: " + image.getOriginalFilename();
+            message = "프로필 사진 추가되었습니다 : " + image.getOriginalFilename();
             return ResponseEntity.status(HttpStatus.OK).body(new ImageMessageResponse(message));
         } catch (Exception e) {
-            message = "Could not upload the file: " + image.getOriginalFilename() + "!";
+            message = "프로필 사진 추가 실패되었습니다 : " + image.getOriginalFilename() + "!";
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ImageMessageResponse(message));
         }
     }
-
-    @GetMapping("/api/v1/userimage")
-    public ResponseEntity<List<ImageResponse>> getListFiles() {
-        List<ImageResponse> files = userImageService.getAllFiles().map(dbFile -> {
-            String fileDownloadUri = ServletUriComponentsBuilder
-                    .fromCurrentContextPath()
-                    .path("/files/")
-                    .path(dbFile.getUser().getId().toString())
-                    .toUriString();
-
-            return new ImageResponse(
-                    dbFile.getName(),
-                    fileDownloadUri,
-                    dbFile.getType());
-        }).collect(Collectors.toList());
-
-        return ResponseEntity.status(HttpStatus.OK).body(files);
-    }
-
 
     @GetMapping("/api/v1/getprofileimage")
     public ResponseEntity<byte[]> getFile() {

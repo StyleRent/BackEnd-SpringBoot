@@ -32,4 +32,17 @@ public class ProfileImage {
     @JoinColumn(name = "userid")
     private User user;
 
+
+    public void updateImage(ProfileImage profileImage){
+        if(profileImage.data != null){
+            this.data = profileImage.data;
+        }
+        if(profileImage.name != null){
+            this.name = profileImage.name;
+        }
+        if(profileImage.type != null){
+            this.type = profileImage.type;
+        }
+    }
+
 }

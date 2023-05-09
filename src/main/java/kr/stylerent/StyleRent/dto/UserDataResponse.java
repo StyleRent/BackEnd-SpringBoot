@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -14,6 +16,9 @@ public class UserDataResponse {
     private String username;
     private String email;
     private String phonenumber;
+    private Integer averageRank;
+    private List<RankResponse> receivedRank;
+    private List<RankResponse> marks;
     private CoordinateResponse coordinateResponse;
     private ImageResponse imageResponse;
 }

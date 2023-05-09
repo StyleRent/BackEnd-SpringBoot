@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ImageResponse {
-    private byte[] imageByte;
+public class UserDataUpdateResponseMessage {
+    public String message;
 }
