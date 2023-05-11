@@ -1,6 +1,8 @@
-package kr.stylerent.StyleRent.entity.Product;
+package kr.stylerent.StyleRent.entity.ProductEntity;
 
 import jakarta.persistence.*;
+import kr.stylerent.StyleRent.entity.Product;
+import kr.stylerent.StyleRent.entity.ProductEntity.ProductCategory;
 import kr.stylerent.StyleRent.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,20 +14,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "information")
+@Table(name = "product_information")
 public class ProductInformation {
     @Id
     @Column(name = "productid")
     private Integer id; // 1
+
+    @Column
+    private String name;
 
     @OneToOne
     @MapsId
     @JoinColumn(name = "productid")
     private Product product;
 
-    @OneToOne
-    @Column
-    private ProductCategory category;
+//    @OneToOne
+//    @Column
+//    private ProductCategory category;
 
     @Column
     private Double price;

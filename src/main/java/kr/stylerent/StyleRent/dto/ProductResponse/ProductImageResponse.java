@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class NewProductResponse {
-    private Integer currentProductId;
+public class ProductImageResponse {
+    private String path;
     private String message;
     private String error;
 }

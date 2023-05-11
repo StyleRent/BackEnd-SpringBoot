@@ -1,6 +1,7 @@
-package kr.stylerent.StyleRent.entity.Product;
+package kr.stylerent.StyleRent.entity;
 
 import jakarta.persistence.*;
+import kr.stylerent.StyleRent.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,12 +12,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "product_category")
-public class ProductCategory {
+@Table(name = "product")
+public class Product {
     @Id
     @GeneratedValue
-    private Integer id;
+    private Integer productid;
 
-    @Column
-    private String category_name;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
 }
