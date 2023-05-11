@@ -57,11 +57,22 @@ public class ProductService {
     public ProductInformationResponse newProductInformation(ProductInformationDto productInformationDto){
         // 정의된 옷장 데이터 반환
         Product initProduct = productRepository.findById(productInformationDto.getProductId()).orElseThrow();
+
+        // 데이터 유효성 검사
+        if (productInformationDto.getProductName().equals("") || productInformationDto.getProductPrice() == null) {
+            return ProductInformationResponse.builder()
+                    .error("제목과 가격을 모두 입력해주세요.")
+                    .build();
+        }
+
+
         ProductInformation productInformation = ProductInformation.builder()
                 .product(initProduct)
                 .name(productInformationDto.getProductName())
                 .description(productInformationDto.getProductDescription())
                 .build();
+
+
 
         productInformationRepository.save(productInformation);
         return ProductInformationResponse.builder()
