@@ -1,20 +1,14 @@
 package kr.stylerent.StyleRent.controller;
 
 import kr.stylerent.StyleRent.dto.ImageMessageResponse;
-import kr.stylerent.StyleRent.dto.Location.LocationDto;
-import kr.stylerent.StyleRent.dto.Location.NearbyDto;
-import kr.stylerent.StyleRent.dto.Location.NearbyUsersResponse;
-import kr.stylerent.StyleRent.dto.Location.SetLocationResponse;
+import kr.stylerent.StyleRent.dto.Location.*;
 import kr.stylerent.StyleRent.dto.RankDto;
 import kr.stylerent.StyleRent.service.LocationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -43,5 +37,10 @@ public class LocationController {
     public ResponseEntity<List<NearbyUsersResponse>> getNearby(@RequestBody NearbyDto request) {
         List<NearbyUsersResponse> nearbyUsers =  locationService.getNearbyUsers(request);
         return ResponseEntity.ok(nearbyUsers);
+    }
+
+    @GetMapping("/api/v1/getcurrentlocation")
+    public ResponseEntity<CurrentLocationResponse> getCurrentLocation() {
+        return ResponseEntity.ok(locationService.getCurrentLocation());
     }
 }

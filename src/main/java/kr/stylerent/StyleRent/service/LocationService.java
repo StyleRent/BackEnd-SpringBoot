@@ -1,9 +1,6 @@
 package kr.stylerent.StyleRent.service;
 
-import kr.stylerent.StyleRent.dto.Location.LocationDto;
-import kr.stylerent.StyleRent.dto.Location.NearbyDto;
-import kr.stylerent.StyleRent.dto.Location.NearbyUsersResponse;
-import kr.stylerent.StyleRent.dto.Location.SetLocationResponse;
+import kr.stylerent.StyleRent.dto.Location.*;
 import kr.stylerent.StyleRent.entity.Location;
 import kr.stylerent.StyleRent.entity.User;
 import kr.stylerent.StyleRent.entity.UserData;
@@ -16,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -69,6 +67,21 @@ public class LocationService {
                 .longitude(currentLocation.getLongitude().toString())
                 .latitude(currentLocation.getLatitude().toString())
                 .build();
+    }
+
+    public CurrentLocationResponse getCurrentLocation(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // 해당 Token을 통해 사용자의 데이터 검색
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
+        Optional<Location> currentLocation = locationRepository.findById(user.getId());
+        if(currentLocation.isPresent()){
+            return CurrentLocationResponse.builder()
+                    .longitude(currentLocation.get().getLongitude().toString())
+                    .latitude(currentLocation.get().getLatitude().toString())
+                    .build();
+        }else{
+            return CurrentLocationResponse.builder().error("Please add current location").build();
+        }
     }
     
     
