@@ -63,6 +63,7 @@ public class ProductService {
         return new FileSystemResource(imageFilePath);
     }
 
+
     public ProductImageResponse addImage(Integer productId, MultipartFile file){
 
         Product product = productRepository.findById(productId).orElseThrow();
@@ -112,7 +113,6 @@ public class ProductService {
         Product currentProduct = Product.builder()
                 .user(user)
                 .build();
-
 
         Product saved = productRepository.save(currentProduct);
 

@@ -18,10 +18,10 @@ import lombok.NoArgsConstructor;
 public class ProductInformation {
     @Id
     @Column(name = "productid")
-    private Integer id; // 1
+    private Integer id; // 12
 
     @Column
-    private String name;
+    private String name;// 모자
 
     @OneToOne
     @MapsId
