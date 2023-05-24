@@ -3,6 +3,7 @@ package kr.stylerent.StyleRent.controller;
 import kr.stylerent.StyleRent.dto.ProductRequest.ProductImagePath;
 import kr.stylerent.StyleRent.dto.ProductRequest.ProductInformationDto;
 import kr.stylerent.StyleRent.dto.ProductResponse.NewProductResponse;
+import kr.stylerent.StyleRent.dto.ProductResponse.ProductDeleteResponse;
 import kr.stylerent.StyleRent.dto.ProductResponse.ProductImageResponse;
 import org.springframework.beans.factory.annotation.Value;
 import kr.stylerent.StyleRent.dto.ProductResponse.ProductInformationResponse;
@@ -35,6 +36,12 @@ public class ProductController {
     @PostMapping("/api/v1/product/newimage/{productId}")
     public ResponseEntity<ProductImageResponse> addImage(@PathVariable Integer productId, @RequestPart("file") MultipartFile file) {
         return ResponseEntity.ok(productService.addImage(productId, file));
+    }
+
+    // API request관리
+    @DeleteMapping("/api/v1/product/delete/{productId}")
+    public ResponseEntity<ProductDeleteResponse> deleteProduct(@PathVariable Integer productId) {
+        return ResponseEntity.ok(productService.productDelete(productId));
     }
 
 //    @GetMapping("/api/v1/product/{productId}/image")

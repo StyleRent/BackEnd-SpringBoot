@@ -2,6 +2,7 @@ package kr.stylerent.StyleRent.service;
 
 import kr.stylerent.StyleRent.dto.ProductRequest.ProductInformationDto;
 import kr.stylerent.StyleRent.dto.ProductResponse.NewProductResponse;
+import kr.stylerent.StyleRent.dto.ProductResponse.ProductDeleteResponse;
 import kr.stylerent.StyleRent.dto.ProductResponse.ProductImageResponse;
 import kr.stylerent.StyleRent.dto.ProductResponse.ProductInformationResponse;
 import kr.stylerent.StyleRent.entity.Product;
@@ -48,6 +49,24 @@ public class ProductService {
     private final ProductInformationRepository productInformationRepository;
 
     private final ProductImageRepository productImageRepository;
+
+
+    // 옷장 데이터 삭제
+    public ProductDeleteResponse productDelete(Integer productId){
+        // product info 제거
+        productInformationRepository.deleteById(productId);
+
+        // product image 제거
+        List<ProductImage> productImages = productImageRepository.findAllImagesByProductId(productId);
+
+        productImageRepository.deleteAll(productImages);
+
+        productRepository.deleteById(productId);
+
+        return ProductDeleteResponse.builder()
+                .message("옷장 삭제되었습니다!")
+                .build();
+    }
 
 
     // Get Image
