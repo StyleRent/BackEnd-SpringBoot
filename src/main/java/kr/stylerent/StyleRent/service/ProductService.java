@@ -15,11 +15,22 @@ import kr.stylerent.StyleRent.repository.ProductRepository;
 import kr.stylerent.StyleRent.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -29,11 +40,69 @@ public class ProductService {
     @Autowired
     private UserRepository userRepository;
 
+    @Value("${spring.web.resources.static-locations}")
+    private String staticFileLocation;
+
     private final ProductRepository productRepository;
 
     private final ProductInformationRepository productInformationRepository;
 
     private final ProductImageRepository productImageRepository;
+
+
+    // Get Image
+    public Resource getImage(Integer productId) throws IOException {
+        String imagePath = staticFileLocation + "/products/" + productId + "/";
+
+        Path imageFilePath = Files.list(Path.of(imagePath))
+                .filter(Files::isRegularFile)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Image not found"));
+
+
+        return new FileSystemResource(imageFilePath);
+    }
+
+    public ProductImageResponse addImage(Integer productId, MultipartFile file){
+
+        Product product = productRepository.findById(productId).orElseThrow();
+
+        if (file.isEmpty()) {
+            return ProductImageResponse.builder()
+                    .error("File is empty")
+                    .build();
+        }
+        try {
+            String uploadPath = staticFileLocation + "/products/" + productId + "/";
+            String fileName = file.getOriginalFilename();
+            File directory = new File(uploadPath);
+            if (!directory.exists()) {
+                directory.mkdirs(); // Create the directory if it doesn't exist
+            }
+
+            Path destination = Path.of(directory.getAbsolutePath(), fileName);
+            Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
+
+            System.out.println("Image uploaded successfully");
+            ProductImage productImage = ProductImage.builder()
+                    .image_path(destination.toString())
+                    .product(product)
+                    .build();
+
+            productImageRepository.save(productImage);
+
+            return ProductImageResponse.builder()
+                    .path(destination.toString())
+                    .build();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed to upload image");
+            return ProductImageResponse.builder()
+                    .error("Failed to upload image")
+                    .build();
+        }
+    }
 
     public NewProductResponse newProduct(){
         //1. 사용자 검색
