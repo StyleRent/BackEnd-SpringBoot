@@ -33,7 +33,7 @@ public class ProductInformation {
 //    private ProductCategory category;
 
     @Column
-    private Double price;
+    private String price;
 
     @Column
     private String description;
