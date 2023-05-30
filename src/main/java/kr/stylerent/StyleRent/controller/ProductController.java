@@ -109,6 +109,7 @@ public class ProductController {
         return ResponseEntity.ok(productService.addFavProduct(productId));
     }
 
+
     // 좋아요 삭제
     @DeleteMapping("/api/v1/product/like/{productId}")
     public ResponseEntity<FavResponse> deleteFavProduct(@PathVariable("productId") Integer productId) {

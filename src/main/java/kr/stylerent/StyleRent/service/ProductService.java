@@ -40,11 +40,14 @@ public class ProductService {
     @Value("${spring.web.resources.static-locations}")
     private String staticFileLocation;
 
-    private final ProductRepository productRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
-    private final ProductInformationRepository productInformationRepository;
+    @Autowired
+    private ProductInformationRepository productInformationRepository;
 
-    private final ProductImageRepository productImageRepository;
+    @Autowired
+    private ProductImageRepository productImageRepository;
 
     private final FavRepository favRepository;
 

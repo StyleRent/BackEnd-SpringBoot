@@ -33,9 +33,9 @@ public class LocationController {
     }
 
     // Get Nearby Users
-    @PostMapping("/api/v1/getnearbyusers")
-    public ResponseEntity<List<NearbyUsersResponse>> getNearby(@RequestBody NearbyDto request) {
-        List<NearbyUsersResponse> nearbyUsers =  locationService.getNearbyUsers(request);
+    @GetMapping("/api/v1/getnearbyusers/{distance}")
+    public ResponseEntity<List<NearbyUsersResponse>> getNearby(@PathVariable("distance") Integer distance) {
+        List<NearbyUsersResponse> nearbyUsers =  locationService.getNearbyUsers(distance);
         return ResponseEntity.ok(nearbyUsers);
     }
 

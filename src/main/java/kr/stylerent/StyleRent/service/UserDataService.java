@@ -1,14 +1,12 @@
 package kr.stylerent.StyleRent.service;
 
 import kr.stylerent.StyleRent.dto.*;
-import kr.stylerent.StyleRent.entity.ProfileImage;
-import kr.stylerent.StyleRent.entity.Rank;
-import kr.stylerent.StyleRent.entity.User;
-import kr.stylerent.StyleRent.entity.UserData;
-import kr.stylerent.StyleRent.repository.ProfileImageRepository;
-import kr.stylerent.StyleRent.repository.RankRepository;
-import kr.stylerent.StyleRent.repository.UserDataRepository;
-import kr.stylerent.StyleRent.repository.UserRepository;
+import kr.stylerent.StyleRent.dto.ProductResponse.ProductDataResponse;
+import kr.stylerent.StyleRent.dto.ProductResponse.ProductImageResponse;
+import kr.stylerent.StyleRent.entity.*;
+import kr.stylerent.StyleRent.entity.ProductEntity.ProductImage;
+import kr.stylerent.StyleRent.entity.ProductEntity.ProductInformation;
+import kr.stylerent.StyleRent.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +14,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +29,10 @@ public class UserDataService {
     private final RankRepository rankRepository;
 
     private final UserRepository userRepository;
+
+    private final ProductRepository productRepository;
+    private final ProductInformationRepository productInformationRepository;
+    private final ProductImageRepository productImageRepository;
 
     public Integer getRankAverage(List<RankResponse> rankResponses){
         Integer num = rankResponses.size();
@@ -48,6 +51,12 @@ public class UserDataService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
         UserData userData = userDataRepository.findById(user.getId()).orElse(new UserData());
+        List<ProductDataResponse> productDatas = new ArrayList<>();
+
+        // 자신만의 옷장 검색
+        List<ProductDataResponse> products = generatorProductList(user);
+
+
 
 
         // Find All data by marked rank
@@ -94,7 +103,36 @@ public class UserDataService {
                 .marks(marks)
                 .receivedRank(receivedRank)
                 .imageResponse(imageResponse)
+                .products(products)
                 .build();
+    }
+
+
+    private List<ProductDataResponse> generatorProductList(User currentUser){
+        // get current user location
+        List<Product> products = productRepository.findAllById(currentUser.getId());
+        List<ProductDataResponse> productDataResponses = new ArrayList<>();
+        List<ProductImageResponse> productImageResponses = new ArrayList<>();
+
+        for(Product p : products){
+            List<ProductImage> productImage = productImageRepository.findAllImagesByProductId(p.getProductid());
+            for(ProductImage pi : productImage){
+                productImageResponses.add(ProductImageResponse.builder()
+                        .path(pi.getImage_path())
+                        .build());
+            }
+            ProductInformation productInformation = productInformationRepository.findInfoById(p.getProductid());
+            if(productInformation != null){
+                productDataResponses.add(ProductDataResponse.builder()
+                        .productId(p.getProductid())
+                        .productName(productInformation.getName())
+                        .productInfo(productInformation.getDescription())
+                        .productPrice(productInformation.getPrice())
+                        .imagePath(productImageResponses)
+                        .build());
+            }
+        }
+        return productDataResponses;
     }
 
     public UserDataUpdateResponseMessage updateUserData(UserDataDto request) {
