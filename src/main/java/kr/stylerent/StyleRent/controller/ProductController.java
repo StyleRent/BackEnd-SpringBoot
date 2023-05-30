@@ -114,19 +114,4 @@ public class ProductController {
     public ResponseEntity<FavResponse> deleteFavProduct(@PathVariable("productId") Integer productId) {
         return ResponseEntity.ok(productService.deleteFavProduct(productId));
     }
-
-//    @DeleteMapping
-//    public ResponseEntity<?> delete(@RequestBody @Validated FavRequestDto favRequestDto) {
-//        ProductService.delete(FavRequestDto);
-//        return success(null);
-//    }
-
-
-    // Add product Image
-//    @PostMapping("/api/v1/product/addproductimage")
-//    public ResponseEntity<ProductImageResponse> setProductImage(
-//            @RequestParam("image") MultipartFile request
-//    ) throws IOException {
-//        return ResponseEntity.ok(productService.newProductImage(request));
-//    }
 }
