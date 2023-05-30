@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface ProductInformationRepository extends JpaRepository<ProductInformation, Integer> {
     @Query(value = "select * from product_information where productid = :currentId", nativeQuery = true)
-    List<Rank> findAllById(Integer currentId);
+    ProductInformation findInfoById(Integer currentId);
 }

@@ -1,5 +1,6 @@
 package kr.stylerent.StyleRent.dto;
 
+import kr.stylerent.StyleRent.dto.ProductResponse.ProductDataResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,4 +22,5 @@ public class UserDataResponse {
     private List<RankResponse> marks;
     private CoordinateResponse coordinateResponse;
     private ImageResponse imageResponse;
+    private List<ProductDataResponse> products;
 }

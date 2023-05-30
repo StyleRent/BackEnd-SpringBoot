@@ -107,6 +107,16 @@ public class ProductController {
         return ResponseEntity.ok(productService.newProductInformation(request));
     }
 
+    // 옷자 정보 반환
+//    @PostMapping("/api/v1/product/getproduct/")
+//    public ResponseEntity<ProductInformationResponse> setProductInformation(
+//            @RequestBody ProductInformationDto request
+//    ) {
+//        return ResponseEntity.ok(productService.newProductInformation(request));
+//    }
+
+
+
 
     // Add product Image
 //    @PostMapping("/api/v1/product/addproductimage")
