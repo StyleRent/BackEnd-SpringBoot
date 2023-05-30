@@ -1,19 +1,14 @@
 package kr.stylerent.StyleRent.service;
 
+import jakarta.transaction.Transactional;
+import kr.stylerent.StyleRent.dto.ProductResponse.*;
 import kr.stylerent.StyleRent.dto.ProductRequest.ProductInformationDto;
-import kr.stylerent.StyleRent.dto.ProductResponse.NewProductResponse;
-import kr.stylerent.StyleRent.dto.ProductResponse.ProductDeleteResponse;
-import kr.stylerent.StyleRent.dto.ProductResponse.ProductImageResponse;
-import kr.stylerent.StyleRent.dto.ProductResponse.ProductInformationResponse;
+import kr.stylerent.StyleRent.entity.Fav;
 import kr.stylerent.StyleRent.entity.Product;
 import kr.stylerent.StyleRent.entity.ProductEntity.ProductImage;
 import kr.stylerent.StyleRent.entity.ProductEntity.ProductInformation;
-import kr.stylerent.StyleRent.entity.ProfileImage;
 import kr.stylerent.StyleRent.entity.User;
-import kr.stylerent.StyleRent.repository.ProductImageRepository;
-import kr.stylerent.StyleRent.repository.ProductInformationRepository;
-import kr.stylerent.StyleRent.repository.ProductRepository;
-import kr.stylerent.StyleRent.repository.UserRepository;
+import kr.stylerent.StyleRent.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,16 +17,17 @@ import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.text.html.Option;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Member;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -49,6 +45,8 @@ public class ProductService {
     private final ProductInformationRepository productInformationRepository;
 
     private final ProductImageRepository productImageRepository;
+
+    private final FavRepository favRepository;
 
 
     // 옷장 데이터 삭제
@@ -169,7 +167,67 @@ public class ProductService {
                 .build();
     }
 
-    // 옷장 이미지 추가
+    public FavResponse addFavProduct(Integer productId){
+        //1. 사용자 검색
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
+
+        // 옷장 데이터 검색
+        Product product = productRepository.findById(productId).orElseThrow();
+
+        // find liked product
+        Optional<Fav> likedProd = favRepository.checkCurrentLike(user.getId(), product.getProductid());
+        if(likedProd.isPresent()){
+            return FavResponse.builder()
+                    .error("Error like")
+                    .build();
+        }
+
+        List<Product> myProducts = productRepository.findAllById(user.getId());
+
+        for(Product myProd : myProducts){
+            if(myProd.getProductid().equals(productId)){
+                return FavResponse.builder()
+                        .error("Error like")
+                        .build();
+            }
+        }
+
+        Fav addFav = Fav.builder()
+                .product(product)
+                .user(user)
+                .build();
+
+        favRepository.save(addFav);
+        return FavResponse.builder()
+                .message("Liked")
+                .build();
+    }
+
+    public FavResponse deleteFavProduct(Integer productId){
+        //1. 사용자 검색
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
+
+        // 옷장 데이터 검색
+        Product product = productRepository.findById(productId).orElseThrow();
+
+        // find liked product
+        Optional<Fav> likedProd = favRepository.checkCurrentLike(user.getId(), product.getProductid());
+        if(likedProd.isPresent()){
+            favRepository.delete(likedProd.get());
+            return FavResponse.builder()
+                    .message("Like removed")
+                    .build();
+        }else{
+            return FavResponse.builder()
+                    .error("Error remove like")
+                    .build();
+        }
+
+    }
+
+        // 옷장 이미지 추가
 //    public ProductImageResponse newProductImage(MultipartFile image) throws IOException {
 //        try {
 //            // Get Image name
