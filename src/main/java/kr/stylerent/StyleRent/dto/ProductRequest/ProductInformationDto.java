@@ -13,6 +13,6 @@ public class ProductInformationDto {
     private Integer productId;
     private String productName;
     private String productCategory;
-    private Double productPrice;
+    private String productPrice;
     private String productDescription;
 }

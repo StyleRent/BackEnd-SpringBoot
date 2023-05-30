@@ -156,6 +156,7 @@ public class ProductService {
                 .product(initProduct)
                 .name(productInformationDto.getProductName())
                 .description(productInformationDto.getProductDescription())
+                .price(productInformationDto.getProductPrice())
                 .build();
 
 
