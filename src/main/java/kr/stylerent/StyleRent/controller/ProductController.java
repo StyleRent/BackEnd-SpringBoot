@@ -1,11 +1,9 @@
 package kr.stylerent.StyleRent.controller;
 
+import kr.stylerent.StyleRent.dto.ProductResponse.*;
 import kr.stylerent.StyleRent.dto.ProductRequest.ProductImagePath;
 import kr.stylerent.StyleRent.dto.ProductRequest.ProductInformationDto;
-import kr.stylerent.StyleRent.dto.ProductResponse.NewProductResponse;
-import kr.stylerent.StyleRent.dto.ProductResponse.ProductImageResponse;
 import org.springframework.beans.factory.annotation.Value;
-import kr.stylerent.StyleRent.dto.ProductResponse.ProductInformationResponse;
 import kr.stylerent.StyleRent.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
@@ -13,13 +11,13 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -35,6 +33,12 @@ public class ProductController {
     @PostMapping("/api/v1/product/newimage/{productId}")
     public ResponseEntity<ProductImageResponse> addImage(@PathVariable Integer productId, @RequestPart("file") MultipartFile file) {
         return ResponseEntity.ok(productService.addImage(productId, file));
+    }
+
+    // API request관리
+    @DeleteMapping("/api/v1/product/delete/{productId}")
+    public ResponseEntity<ProductDeleteResponse> deleteProduct(@PathVariable Integer productId) {
+        return ResponseEntity.ok(productService.productDelete(productId));
     }
 
 //    @GetMapping("/api/v1/product/{productId}/image")
@@ -75,6 +79,11 @@ public class ProductController {
                 .body(imageResource);
     }
 
+    @GetMapping("/api/v1/product/{search}")
+    public ResponseEntity<List<ProductDataResponse>> findProduct(@PathVariable("search") String search) {
+        return ResponseEntity.ok(productService.findProduct(search));
+    }
+
 
 
 
@@ -100,12 +109,16 @@ public class ProductController {
         return ResponseEntity.ok(productService.newProductInformation(request));
     }
 
+    // 좋아요
+    @PostMapping("/api/v1/product/like/{productId}")
+    public ResponseEntity<FavResponse> addFavProduct(@PathVariable("productId") Integer productId) {
+        return ResponseEntity.ok(productService.addFavProduct(productId));
+    }
 
-    // Add product Image
-//    @PostMapping("/api/v1/product/addproductimage")
-//    public ResponseEntity<ProductImageResponse> setProductImage(
-//            @RequestParam("image") MultipartFile request
-//    ) throws IOException {
-//        return ResponseEntity.ok(productService.newProductImage(request));
-//    }
+
+    // 좋아요 삭제
+    @DeleteMapping("/api/v1/product/like/{productId}")
+    public ResponseEntity<FavResponse> deleteFavProduct(@PathVariable("productId") Integer productId) {
+        return ResponseEntity.ok(productService.deleteFavProduct(productId));
+    }
 }

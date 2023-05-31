@@ -1,7 +1,6 @@
 package kr.stylerent.StyleRent.entity;
 
 import jakarta.persistence.*;
-import kr.stylerent.StyleRent.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,15 +11,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "product")
-public class Product {
+@Table(name = "favid")
+public class Fav {
     @Id
     @GeneratedValue
-    private Integer productid; // 12
-
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
 }
