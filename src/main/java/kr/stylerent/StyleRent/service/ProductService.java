@@ -26,6 +26,7 @@ import java.lang.reflect.Member;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -231,7 +232,37 @@ public class ProductService {
 
     }
 
-        // 옷장 이미지 추가
+    public List<ProductDataResponse> findProduct(String search) {
+        //1. 사용자 검색
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
+
+        List<ProductDataResponse> productDataResponses = new ArrayList<>();
+
+        List<Product> products = new ArrayList<>();
+        List<ProductInformation> productInfo = productInformationRepository.findALlByProductName(search);
+        for(ProductInformation pI : productInfo){
+            Optional<Product> product = productRepository.findById(pI.getId());
+            List<ProductImage> productImages = productImageRepository.findAllImagesByProductId(pI.getId());
+            List<ProductImageResponse> imageResponse = new ArrayList<>();
+            for(ProductImage pImage : productImages){
+                imageResponse.add(ProductImageResponse.builder()
+                                .path(pImage.getImage_path())
+                        .build());
+            }
+
+            productDataResponses.add(ProductDataResponse.builder()
+                            .productPrice(pI.getPrice())
+                            .productName(pI.getName())
+                            .productId(pI.getId())
+                            .imagePath(imageResponse)
+                            .productInfo(pI.getDescription())
+                    .build());
+        }
+        return productDataResponses;
+    }
+
+    // 옷장 이미지 추가
 //    public ProductImageResponse newProductImage(MultipartFile image) throws IOException {
 //        try {
 //            // Get Image name
