@@ -14,11 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class RankController {
     private final RankService rankService;
 
-
     @PostMapping("/api/v1/setrank")
-    public ResponseEntity<RankResponse> setrank(
-            @RequestBody RankDto request
-    ) {
+    public ResponseEntity<RankResponse> setRank(@RequestBody RankDto request) {
         return ResponseEntity.ok(rankService.setRank(request));
     }
 }

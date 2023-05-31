@@ -13,5 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RankDto {
     private Integer rank;
-    private Integer recieverid;
+    private Integer receiverId;
+    private String evaluationText;
 }

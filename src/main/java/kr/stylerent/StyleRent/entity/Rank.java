@@ -19,7 +19,10 @@ public class Rank {
     private Integer id;
 
     @Column
-    private Integer rank; // 1-5
+    private Integer rank;
+
+    @Column
+    private String evaluationText;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
