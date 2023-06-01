@@ -262,6 +262,27 @@ public class ProductService {
         return productDataResponses;
     }
 
+    public List<MyFavResponse> getFavProd() {
+        //1. 사용자 검색
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
+        List<MyFavResponse> myFavResponses = new ArrayList<>();
+
+        List<Fav> fav = favRepository.getMyFav(user.getId());
+        for(Fav f : fav){
+            ProductInformation p = productInformationRepository.findInfoById(f.getProduct().getProductid());
+            List<ProductImage> pImage = productImageRepository.findAllImagesByProductId(f.getProduct().getProductid());
+            myFavResponses.add(MyFavResponse.builder()
+                            .productImage(pImage.get(0).getImage_path())
+                            .productName(p.getName())
+                            .productPrice(p.getPrice())
+                            .productId(p.getId())
+                    .build());
+        }
+        return myFavResponses;
+
+    }
+
     // 옷장 이미지 추가
 //    public ProductImageResponse newProductImage(MultipartFile image) throws IOException {
 //        try {

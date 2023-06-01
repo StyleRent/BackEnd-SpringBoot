@@ -1,4 +1,4 @@
-package kr.stylerent.StyleRent.dto.MessageResponse;
+package kr.stylerent.StyleRent.dto.Message;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MessageInitResponse {
+public class ReceiverHistory {
+    private Integer userId;
     private String message;
-    private String error;
 }

@@ -1,5 +1,6 @@
 package kr.stylerent.StyleRent.controller;
 
+import kr.stylerent.StyleRent.dto.Message.MyChatResponse;
 import kr.stylerent.StyleRent.dto.ProductResponse.*;
 import kr.stylerent.StyleRent.dto.ProductRequest.ProductImagePath;
 import kr.stylerent.StyleRent.dto.ProductRequest.ProductInformationDto;
@@ -113,6 +114,12 @@ public class ProductController {
     @PostMapping("/api/v1/product/like/{productId}")
     public ResponseEntity<FavResponse> addFavProduct(@PathVariable("productId") Integer productId) {
         return ResponseEntity.ok(productService.addFavProduct(productId));
+    }
+
+    // 좋아요
+    @GetMapping("/api/v1/product/like")
+    public ResponseEntity<List<MyFavResponse>> getFavProduct() {
+        return ResponseEntity.ok(productService.getFavProd());
     }
 
 

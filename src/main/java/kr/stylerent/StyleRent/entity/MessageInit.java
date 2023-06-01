@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "message_controller")
-public class MessageController {
+@Table(name = "message")
+public class MessageInit {
     @Id
     @GeneratedValue
-    private Integer messagec_id;
+    private Integer message_id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
