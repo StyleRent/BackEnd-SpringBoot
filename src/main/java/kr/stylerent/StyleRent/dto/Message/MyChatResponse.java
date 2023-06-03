@@ -15,6 +15,7 @@ public class MyChatResponse {
     private Integer senderId;
     private Integer receiverId;
     private String receiverName;
+    private String productImage;
     private String lastMessage;
     private Integer productId;
 }

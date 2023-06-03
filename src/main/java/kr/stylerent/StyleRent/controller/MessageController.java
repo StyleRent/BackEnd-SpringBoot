@@ -1,9 +1,6 @@
 package kr.stylerent.StyleRent.controller;
 
-import kr.stylerent.StyleRent.dto.Message.MessageDto;
-import kr.stylerent.StyleRent.dto.Message.MessageHistory;
-import kr.stylerent.StyleRent.dto.Message.MessageInitResponse;
-import kr.stylerent.StyleRent.dto.Message.MyChatResponse;
+import kr.stylerent.StyleRent.dto.Message.*;
 import kr.stylerent.StyleRent.dto.MessageRequest.MessageInit;
 import kr.stylerent.StyleRent.dto.ProductRequest.ProductImagePath;
 import kr.stylerent.StyleRent.dto.ProductResponse.FavResponse;
@@ -17,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 public class MessageController {
-     MessageService messageService;
+    private final MessageService messageService;
 
     // Get my chat
     @GetMapping("/api/v1/chat")
@@ -33,7 +30,13 @@ public class MessageController {
 
     // Message History
     @PostMapping("/api/v1/chat/history")
-    public ResponseEntity<MessageHistory> messageHistory(@RequestBody MessageDto request) {
+    public ResponseEntity<MessageHistory> messageHistory(@RequestBody ChatHistoryRequest request) {
         return ResponseEntity.ok(messageService.messageHistory(request));
+    }
+
+    // Message History
+    @PostMapping("/api/v1/chat/sendmessage")
+    public ResponseEntity<SendMessageResponse> sendMessage(@RequestBody ChatDto request) {
+        return ResponseEntity.ok(messageService.sendMessage(request));
     }
 }

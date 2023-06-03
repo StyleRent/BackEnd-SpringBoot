@@ -142,6 +142,7 @@ public class LocationService {
                     nearByUsers.add(NearbyUsersResponse.builder()
                             .distance(Double.toString(dist))
                             .userName(currentUser.getUsername())
+                            .userId(currentUser.getId())
                             .longtitude(currentLocation.getLongitude().toString())
                             .latitude(currentLocation.getLatitude().toString())
                             .products(generatorProductList(currentUser))

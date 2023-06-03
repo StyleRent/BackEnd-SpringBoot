@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReceiverHistory {
+    private Integer chatId;
     private Integer userId;
     private String message;
 }

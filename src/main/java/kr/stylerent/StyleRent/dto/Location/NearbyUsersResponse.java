@@ -17,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 public class NearbyUsersResponse {
     private String userName;
+    private Integer userId;
     private String longtitude;
     private String latitude;
     private String distance;

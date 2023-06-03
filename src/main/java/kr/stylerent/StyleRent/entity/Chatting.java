@@ -21,6 +21,10 @@ public class Chatting {
     @JoinColumn(name = "message_id")
     private MessageInit messageInit;
 
+    @ManyToOne
+    @JoinColumn(name = "sender_id")
+    private User sender;
+
     @Column
     private String message;
 }
