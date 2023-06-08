@@ -85,6 +85,11 @@ public class ProductController {
         return ResponseEntity.ok(productService.findProduct(search));
     }
 
+    @GetMapping("/api/v1/product/getproductimages/{productId}")
+    public ResponseEntity<List<ProductImageResponse>> findProduct(@PathVariable("productId") Integer productId) {
+        return ResponseEntity.ok(productService.getProductImage(productId));
+    }
+
 
 
 

@@ -18,6 +18,7 @@ import java.util.List;
 public class NearbyUsersResponse {
     private String userName;
     private Integer userId;
+    private byte[] profileImage;
     private String longtitude;
     private String latitude;
     private String distance;

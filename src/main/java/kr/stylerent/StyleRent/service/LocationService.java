@@ -3,12 +3,9 @@ package kr.stylerent.StyleRent.service;
 import kr.stylerent.StyleRent.dto.Location.*;
 import kr.stylerent.StyleRent.dto.ProductResponse.ProductDataResponse;
 import kr.stylerent.StyleRent.dto.ProductResponse.ProductImageResponse;
-import kr.stylerent.StyleRent.entity.Location;
-import kr.stylerent.StyleRent.entity.Product;
+import kr.stylerent.StyleRent.entity.*;
 import kr.stylerent.StyleRent.entity.ProductEntity.ProductImage;
 import kr.stylerent.StyleRent.entity.ProductEntity.ProductInformation;
-import kr.stylerent.StyleRent.entity.User;
-import kr.stylerent.StyleRent.entity.UserData;
 import kr.stylerent.StyleRent.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +29,12 @@ public class LocationService {
 
     @Autowired
     private ProductImageRepository productImageRepository;
+
+    @Autowired
+    private FavRepository favRepository;
+
+    @Autowired
+    private ProfileImageRepository profileImageRepository;
 
     @Autowired
     private ProductInformationRepository productInformationRepository;
@@ -137,15 +140,17 @@ public class LocationService {
                 // Check length of products current user
                 List<Product> products = productRepository.findAllById(currentUser.getId());
                 System.out.println("Currnet user ---------------->>>>" + currentUser.getUsername());
+                Optional<ProfileImage> profileImage = profileImageRepository.findById(currentUser.getId());
 
                 if (dist <= distanceD && products.size() >= 1 && !user.getId().equals(currentUser.getId())) {
                     nearByUsers.add(NearbyUsersResponse.builder()
                             .distance(Double.toString(dist))
                             .userName(currentUser.getUsername())
                             .userId(currentUser.getId())
+                                    .profileImage(profileImage.map(ProfileImage::getData).orElse(null))
                             .longtitude(currentLocation.getLongitude().toString())
                             .latitude(currentLocation.getLatitude().toString())
-                            .products(generatorProductList(currentUser))
+                            .products(generatorProductList(currentUser, user))
                             .build());
                 }
             }
@@ -154,19 +159,26 @@ public class LocationService {
 
     }
 
-    private List<ProductDataResponse> generatorProductList(User currentUser){
+    private List<ProductDataResponse> generatorProductList(User currentUser, User myData){
         // get current user location
         List<Product> products = productRepository.findAllById(currentUser.getId());
         List<ProductDataResponse> productDataResponses = new ArrayList<>();
         List<ProductImageResponse> productImageResponses = new ArrayList<>();
 
         for(Product p : products){
+            Boolean liked = false;
             List<ProductImage> productImage = productImageRepository.findAllImagesByProductId(p.getProductid());
             for(ProductImage pi : productImage){
                 productImageResponses.add(ProductImageResponse.builder()
                                 .path(pi.getImage_path())
                         .build());
             }
+            // check liked product
+            Optional<Fav> checkIsLiked = favRepository.checkCurrentLike(myData.getId(), p.getProductid());
+            if(checkIsLiked.isPresent()){
+                liked = true;
+            }
+
             ProductInformation productInformation = productInformationRepository.findInfoById(p.getProductid());
             if(productInformation != null){
                 productDataResponses.add(ProductDataResponse.builder()
@@ -174,6 +186,7 @@ public class LocationService {
                         .productName(productInformation.getName())
                         .productInfo(productInformation.getDescription())
                         .productPrice(productInformation.getPrice())
+                        .liked(liked)
                         .imagePath(productImageResponses)
                         .build());
             }

@@ -17,5 +17,6 @@ public class ProductDataResponse {
     private String productName;
     private String productInfo;
     private String productPrice;
+    private Boolean liked;
     private List<ProductImageResponse> imagePath;
 }

@@ -84,6 +84,18 @@ public class ProductService {
         return new FileSystemResource(imageFilePath);
     }
 
+    public List<ProductImageResponse> getProductImage(Integer productId){
+
+        List<ProductImage> productImages = productImageRepository.findAllImagesByProductId(productId);
+        List<ProductImageResponse> imageResponse = new ArrayList<>();
+        for(ProductImage pImage : productImages){
+            imageResponse.add(ProductImageResponse.builder()
+                    .path(pImage.getImage_path())
+                    .build());
+        }
+        return imageResponse;
+    }
+
 
     public ProductImageResponse addImage(Integer productId, MultipartFile file){
 
