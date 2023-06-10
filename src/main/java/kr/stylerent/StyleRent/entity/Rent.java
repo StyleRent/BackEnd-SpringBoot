@@ -20,9 +20,15 @@ public class Rent {
     @GeneratedValue
     private Integer id;
 
-    @Column(name = "ddate", nullable = false, updatable = false)
+    @Column
+    private Boolean status;
+
+    @Column
+    private Date returnedTime;
+
+    @Column(name = "rentedTime", nullable = false, updatable = false)
     @CreationTimestamp
-    private Date ddate;
+    private Date rentedTime;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
@@ -33,6 +39,6 @@ public class Rent {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "renter_user")
-    private User renter_user;
+    @JoinColumn(name = "renter_id")
+    private User renter;
 }
