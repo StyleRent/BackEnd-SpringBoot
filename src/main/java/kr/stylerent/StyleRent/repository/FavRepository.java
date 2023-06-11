@@ -12,6 +12,9 @@ public interface FavRepository extends JpaRepository<Fav, Integer> {
     @Query(value = "select * from favid where user_id = :currentId AND product_id = :productId", nativeQuery = true)
     Optional<Fav> checkCurrentLike(Integer currentId, Integer productId);
 
+    @Query(value = "select * from favid where product_id = :productId", nativeQuery = true)
+    List<Fav> getFavByProductId(Integer productId);
+
     @Query(value = "select * from favid where user_id = :currentId", nativeQuery = true)
     List<Fav> getMyFav(Integer currentId);
 }

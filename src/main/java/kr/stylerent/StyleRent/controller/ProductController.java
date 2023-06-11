@@ -93,12 +93,10 @@ public class ProductController {
 
 
 
-//    @PostMapping("/api/v1/product/productinformation")
-//    public ResponseEntity<ProductInformationDto> setInformation(
-//            @RequestBody ProductInformationDto request
-//    ) {
-//        return ResponseEntity.ok(rankService.setRank(request));
-//    }
+    @GetMapping("/api/v1/product/info/{productId}")
+    public ResponseEntity<ProductDataResponse> getProductInfo(@PathVariable("productId") Integer productId) {
+        return ResponseEntity.ok(productService.getProductInfo(productId));
+    }
 
      // 옷창 정의
     @PostMapping("/api/v1/product/newproduct")

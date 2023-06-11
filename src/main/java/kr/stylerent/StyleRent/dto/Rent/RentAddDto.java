@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RentAddDto {
-    Integer userId;
     Integer renterId;
     Integer productId;
 }

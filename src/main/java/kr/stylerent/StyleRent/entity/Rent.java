@@ -30,10 +30,12 @@ public class Rent {
     @CreationTimestamp
     private Date rentedTime;
 
+    // owner product
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
+    // owner
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

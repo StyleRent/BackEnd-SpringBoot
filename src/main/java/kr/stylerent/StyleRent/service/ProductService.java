@@ -3,11 +3,9 @@ package kr.stylerent.StyleRent.service;
 import jakarta.transaction.Transactional;
 import kr.stylerent.StyleRent.dto.ProductResponse.*;
 import kr.stylerent.StyleRent.dto.ProductRequest.ProductInformationDto;
-import kr.stylerent.StyleRent.entity.Fav;
-import kr.stylerent.StyleRent.entity.Product;
+import kr.stylerent.StyleRent.entity.*;
 import kr.stylerent.StyleRent.entity.ProductEntity.ProductImage;
 import kr.stylerent.StyleRent.entity.ProductEntity.ProductInformation;
-import kr.stylerent.StyleRent.entity.User;
 import kr.stylerent.StyleRent.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +40,15 @@ public class ProductService {
     private String staticFileLocation;
 
     @Autowired
+    private RentRepository rentRepository;
+
+    @Autowired
+    private RankRepository rankRepository;
+
+    @Autowired
+    private FavRepository favRepository;
+
+    @Autowired
     private ProductRepository productRepository;
 
     @Autowired
@@ -50,7 +57,6 @@ public class ProductService {
     @Autowired
     private ProductImageRepository productImageRepository;
 
-    private final FavRepository favRepository;
 
 
     // 옷장 데이터 삭제
@@ -69,6 +75,11 @@ public class ProductService {
                 .message("옷장 삭제되었습니다!")
                 .build();
     }
+
+    // product edit
+//    public ProductEditResponse productEdit(){
+//
+//    }
 
 
     // Get Image
@@ -94,6 +105,61 @@ public class ProductService {
                     .build());
         }
         return imageResponse;
+    }
+
+
+    // get product info
+    public ProductDataResponse getProductInfo(Integer productId){
+        Optional<Product> product = productRepository.findById(productId);
+
+        if(product.isPresent()){
+            Boolean rentStatus = false;
+            List<ProductImageResponse> productImageResponses = new ArrayList<>();
+            ProductInformation productInformation = productInformationRepository.findById(product.get().getProductid()).orElseThrow();
+
+
+            List<ProductImage> productImages = productImageRepository.findAllImagesByProductId(product.get().getProductid());
+            for(ProductImage pi : productImages){
+                productImageResponses.add(ProductImageResponse.builder()
+                        .path(pi.getImage_path())
+                        .build());
+            }
+
+
+
+            // check rent status ->
+            Optional<Rent> checkProductRent = rentRepository.checkRentStatusByProductId(productId);
+            if(checkProductRent.isPresent()){
+                rentStatus = true;
+            }
+
+            // rank average
+            List<Rank> rankList = rankRepository.findAllByReceiverId(product.get().getUser().getId());
+            int sum = 0;
+            int count = rankList.size();
+
+            for (Rank rank : rankList) {
+                sum += rank.getRank();
+            }
+
+            double average = count > 0 ? (double) sum / count : 0.0;
+            double roundedAverage = Math.round(average * 10.0) / 10.0;
+
+
+            return ProductDataResponse.builder()
+                    .rentStatus(rentStatus)
+                    .userId(product.get().getUser().getId())
+                    .productId(productId)
+                    .productPrice(productInformation.getPrice())
+                    .productName(productInformation.getName())
+                    .rankAverage(roundedAverage)
+                    .productInfo(productInformation.getDescription())
+                    .imagePath(productImageResponses)
+                    .build();
+        }
+
+        return ProductDataResponse.builder().build();
+
     }
 
 

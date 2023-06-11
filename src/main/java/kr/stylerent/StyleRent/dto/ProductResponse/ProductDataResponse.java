@@ -14,9 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 public class ProductDataResponse {
     private Integer productId;
+    private Integer userId;
     private String productName;
     private String productInfo;
     private String productPrice;
     private Boolean liked;
+    private Boolean rentStatus;
+    private Double rankAverage;
     private List<ProductImageResponse> imagePath;
 }

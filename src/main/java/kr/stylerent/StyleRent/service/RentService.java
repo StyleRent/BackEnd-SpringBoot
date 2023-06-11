@@ -24,8 +24,11 @@ public class RentService {
 
     @Autowired
     private UserRepository userRepository;
-    private final ProductRepository productRepository;
-    private final RentRepository rentRepository;
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private RentRepository rentRepository;
 
     public RentAddResponse addRent(RentAddDto request){
         // current user data
@@ -38,62 +41,69 @@ public class RentService {
         // product id
         Optional<Product> product = productRepository.findById(request.getProductId());
 
+        if(renter.isEmpty() && product.isEmpty()){
+            return RentAddResponse.builder()
+                    .error("Error find user or product")
+                    .build();
+        }
+
+        // check if current product is not rent on current time
+        Optional<Rent> checkProductRent = rentRepository.checkRentStatus(user.getId(), request.getRenterId(), request.getProductId());
+
+        if(checkProductRent.isPresent()){
+            return RentAddResponse.builder()
+                    .error("This product is already rented")
+                    .build();
+        }
+
+        rentRepository.save(
+                    Rent.builder()
+                            .status(true)
+                            .renter(renter.get())
+                            .user(user)
+                            .product(product.get())
+                            .build());
+
         return RentAddResponse.builder()
-                .message(user.getUsername())
+                .message("This product has been successfully rented")
                 .build();
-//
-//
-//        // check if current product is not rent on current time
-////        Optional<Rent> checkProductRent = rentRepository.checkRentStatus(user.getId(), request.getRenterId(), request.getProductId());
-//
-////        if(checkProductRent.isPresent()){
-////            return RentAddResponse.builder()
-////                    .error("This product is already rented")
-////                    .build();
-////        }
-//
-//        if(renter.isPresent() && product.isPresent()){
-//            rentRepository.save(
-//                    Rent.builder()
-//                            .status(true)
-//                            .renter(renter.get())
-//                            .user(user)
-//                            .product(product.get())
-//                            .build()
-//            );
-//            return RentAddResponse.builder()
-//                    .message("This product has been successfully rented")
-//                    .build();
-//        }else{
-//            return RentAddResponse.builder()
-//                    .error("Cant find product or renter id")
-//                    .build();
-//        }
-
-
     }
 
-//    public RentAddResponse finishRent(RentFinishDto request){
-//        // my user is renter
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
-//
-//        // check if current product is not rent on current time
-//        Optional<Rent> checkProductRent = rentRepository.checkRentStatus(user.getId(), request.getRenterId(), request.getProductId());
-//
-//        if(checkProductRent.isPresent()){
-//            checkProductRent.get().setReturnedTime(new Date());
-//            checkProductRent.get().setStatus(false);
-//            rentRepository.save(checkProductRent.get());
-//
-//            return RentAddResponse.builder()
-//                    .message("Product successfully returned!")
-//                    .build();
-//        }
-//
-//        return RentAddResponse.builder()
-//                .error("Not found current product")
-//                .build();
-//
-//    }
+    public RentAddResponse finishRent(RentFinishDto request){
+        // current user data
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
+
+        // renter id
+        Optional<User> renter = userRepository.findById(request.getRenterId());
+
+        // product id
+        Optional<Product> product = productRepository.findById(request.getProductId());
+
+        if(renter.isEmpty() && product.isEmpty()){
+            return RentAddResponse.builder()
+                    .error("Error find user or product")
+                    .build();
+        }
+
+        // check if current product is not rent on current time
+        Optional<Rent> checkProductRent = rentRepository.checkRentStatus(user.getId(), request.getRenterId(), request.getProductId());
+
+        if(checkProductRent.isEmpty()){
+            return RentAddResponse.builder()
+                    .error("This product has not been rented yet")
+                    .build();
+        }
+
+        Rent update = checkProductRent.get();
+        // update data
+        update.setStatus(false);
+        update.setReturnedTime(new Date());
+
+        rentRepository.save(update);
+
+        return RentAddResponse.builder()
+                .message("This product has been successfully returned")
+                .build();
+    }
 }

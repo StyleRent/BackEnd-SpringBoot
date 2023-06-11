@@ -31,6 +31,9 @@ public class LocationService {
     private ProductImageRepository productImageRepository;
 
     @Autowired
+    private RentRepository rentRepository;
+
+    @Autowired
     private FavRepository favRepository;
 
     @Autowired
@@ -163,16 +166,28 @@ public class LocationService {
         // get current user location
         List<Product> products = productRepository.findAllById(currentUser.getId());
         List<ProductDataResponse> productDataResponses = new ArrayList<>();
-        List<ProductImageResponse> productImageResponses = new ArrayList<>();
 
         for(Product p : products){
+            Boolean rentStatus = false;
             Boolean liked = false;
-            List<ProductImage> productImage = productImageRepository.findAllImagesByProductId(p.getProductid());
-            for(ProductImage pi : productImage){
+
+            // check rent status ->
+            Optional<Rent> checkProductRent = rentRepository.checkRentStatusByProductId(p.getProductid());
+            if(checkProductRent.isPresent()){
+                rentStatus = true;
+            }
+
+
+            List<ProductImage> productImages = productImageRepository.findAllImagesByProductId(p.getProductid());
+            List<ProductImageResponse> productImageResponses = new ArrayList<>(); // Create a new list for each product
+
+            for (ProductImage pi : productImages) {
                 productImageResponses.add(ProductImageResponse.builder()
-                                .path(pi.getImage_path())
+                        .path(pi.getImage_path())
                         .build());
             }
+
+
             // check liked product
             Optional<Fav> checkIsLiked = favRepository.checkCurrentLike(myData.getId(), p.getProductid());
             if(checkIsLiked.isPresent()){
@@ -187,9 +202,11 @@ public class LocationService {
                         .productInfo(productInformation.getDescription())
                         .productPrice(productInformation.getPrice())
                         .liked(liked)
+                        .rentStatus(rentStatus)
                         .imagePath(productImageResponses)
                         .build());
             }
+
         }
         return productDataResponses;
     }

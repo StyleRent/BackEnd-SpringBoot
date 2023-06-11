@@ -3,15 +3,23 @@ package kr.stylerent.StyleRent.service;
 
 import kr.stylerent.StyleRent.dto.Message.*;
 import kr.stylerent.StyleRent.entity.*;
+import kr.stylerent.StyleRent.entity.ProductEntity.ProductImage;
+import kr.stylerent.StyleRent.entity.ProductEntity.ProductInformation;
 import kr.stylerent.StyleRent.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FileUtils;
 import org.aspectj.bridge.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +31,7 @@ public class MessageService {
 
     private final MessageRepository messageRepository;
 
+    private final RentRepository rentRepository;
 
     private final ChattingRepository chattingRepository;
 
@@ -41,31 +50,85 @@ public class MessageService {
         List<MessageInit> myChats = messageRepository.findMessage(user.getId(), user.getId());
         List<MyChatResponse> response = new ArrayList<>();
         for(MessageInit mI : myChats){
+            Boolean rentStatus = false;
+
+            // check rent status ->
+            Optional<Rent> checkProductRent = rentRepository.checkRentStatusByProductId(mI.getProduct().getProductid());
+
+            if(checkProductRent.isPresent()){
+                rentStatus = true;
+            }
+
+
+            ProductInformation productInformation = productInformationRepository.findInfoById(mI.getProduct().getProductid());
+
+
 
             if(mI.getReceiver().getId().equals(user.getId())){
                 // find user image
                 Optional<ProfileImage> profileImage = profileImageRepository.findById(mI.getUser().getId());
+                List<ProductImage> productImage = productImageRepository.findAllImagesByProductId(mI.getProduct().getProductid());
 
-                response.add(MyChatResponse.builder()
+
+                try {
+                    File imageFile = new File(productImage.get(0).getImage_path());
+                    byte[] imageBytes = FileUtils.readFileToByteArray(imageFile);
+                    String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+                    // Use the base64Image as needed (e.g., store in a database, return in a response, etc.)
+
+
+                    response.add(MyChatResponse.builder()
                         .receiverImage(profileImage.map(ProfileImage::getData).orElse(null))
                         .receiverName(mI.getUser().getUsername())
                         .senderId(user.getId())
+                        .myChat(true)
+                        .productName(productInformation.getName())
+                        .productPrice(productInformation.getPrice())
+                        .rentStatus(rentStatus)
                         .productId(mI.getProduct().getProductid())
+                        .productImage(base64Image)
                         .receiverId(mI.getUser().getId())
                         .messageId(mI.getMessage_id())
                         .build());
+                } catch (IOException e) {
+                    // Handle file read or encoding errors
+                }
             }else{
+                Boolean rentedToMe = false;
                 // find user image
                 Optional<ProfileImage> profileImage = profileImageRepository.findById(mI.getReceiver().getId());
+                List<ProductImage> productImage = productImageRepository.findAllImagesByProductId(mI.getProduct().getProductid());
+                Optional<Rent> checkRentToMe = rentRepository.checkRentStatus(mI.getReceiver().getId() ,user.getId(), mI.getProduct().getProductid());
 
-                response.add(MyChatResponse.builder()
-                        .receiverImage(profileImage.map(ProfileImage::getData).orElse(null))
-                        .receiverName(mI.getReceiver().getUsername())
-                        .senderId(user.getId())
-                        .productId(mI.getProduct().getProductid())
-                        .receiverId(mI.getReceiver().getId())
-                        .messageId(mI.getMessage_id())
-                        .build());
+                if(checkRentToMe.isPresent()){
+                    rentedToMe = true;
+                }
+
+                try {
+                    File imageFile = new File(productImage.get(0).getImage_path());
+                    byte[] imageBytes = FileUtils.readFileToByteArray(imageFile);
+                    String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+                    // Use the base64Image as needed (e.g., store in a database, return in a response, etc.)
+
+                    response.add(MyChatResponse.builder()
+                            .receiverImage(profileImage.map(ProfileImage::getData).orElse(null))
+                            .receiverName(mI.getReceiver().getUsername())
+                            .senderId(user.getId())
+                            .myChat(false)
+                            .productName(productInformation.getName())
+                            .productPrice(productInformation.getPrice())
+                            .rentStatus(rentStatus)
+                            .isRentedToMe(rentedToMe)
+                            .productId(mI.getProduct().getProductid())
+                            .productImage(base64Image)
+                            .receiverId(mI.getReceiver().getId())
+                            .messageId(mI.getMessage_id())
+                            .build());
+                } catch (IOException e) {
+                    // Handle file read or encoding errors
+                }
             }
         }
 
@@ -94,23 +157,130 @@ public class MessageService {
                     .build();
         }
         // check send history
-        Optional<MessageInit> messageInit = messageRepository.checkMessage(sender.getId(), product.get().getProductid());
+        Optional<MessageInit> mI = messageRepository.checkMessage(sender.getId(), product.get().getProductid());
 
 
-        if(messageInit.isPresent()){
-            return MessageInitResponse.builder()
-                    .messageId(messageInit.get().getMessage_id())
+        // chat is not empty
+        if(mI.isPresent()){
+
+            Boolean rentStatus = false;
+            Boolean rentedToMe = false;
+
+            // check rent status ->
+            Optional<Rent> checkProductRent = rentRepository.checkRentStatusByProductId(request.getProductId());
+
+            if(checkProductRent.isPresent()){
+                rentStatus = true;
+            }
+
+
+            ProductInformation productInformation = productInformationRepository.findInfoById(request.getProductId());
+
+            List<ProductImage> productImage = productImageRepository.findAllImagesByProductId(request.getProductId());
+
+
+            Optional<Rent> checkRentToMe = rentRepository.checkRentStatus(request.getReceiverId(), sender.getId(), request.getProductId());
+
+            if(checkRentToMe.isPresent()){
+                rentedToMe = true;
+            }
+
+            try {
+                File imageFile = new File(productImage.get(0).getImage_path());
+                byte[] imageBytes = FileUtils.readFileToByteArray(imageFile);
+                String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+
+                return MessageInitResponse.builder()
+                    .messageId(mI.get().getMessage_id())
+                        .myChat(false)
+                        .userId(sender.getId())
+                        .receiverId(request.getReceiverId())
+                        .rentStatus(rentStatus)
+                        .productImage(base64Image)
+                        .isRentedToMe(rentedToMe)
+                        .productId(request.getProductId())
+                        .productName(productInformation.getName())
+                        .productPrice(productInformation.getPrice())
                     .build();
+
+            } catch (IOException e) {
+                // Handle file read or encoding errors
+                return MessageInitResponse.builder()
+                        .error("Cant find product Image")
+                        .build();
+            }
+
         }else{
-            MessageInit messagNew = MessageInit.builder()
+
+
+            MessageInit mInew = MessageInit.builder()
                     .product(product.get())
                     .user(sender)
                     .receiver(receiver.get())
                     .build();
 
-            messageRepository.save(messagNew);
+            MessageInit getM = messageRepository.save(mInew);
+
+
+
+            // add datas
+            Boolean rentStatus = false;
+            Boolean rentedToMe = false;
+
+            // check rent status ->
+            Optional<Rent> checkProductRent = rentRepository.checkRentStatusByProductId(request.getProductId());
+
+            if(checkProductRent.isPresent()){
+                rentStatus = true;
+            }
+
+
+            ProductInformation productInformation = productInformationRepository.findInfoById(request.getProductId());
+
+            List<ProductImage> productImage = productImageRepository.findAllImagesByProductId(request.getProductId());
+
+
+            Optional<Rent> checkRentToMe = rentRepository.checkRentStatus(request.getReceiverId(), sender.getId(), request.getProductId());
+
+            if(checkRentToMe.isPresent()){
+                rentedToMe = true;
+            }
+
+            try {
+                File imageFile = new File(productImage.get(0).getImage_path());
+                byte[] imageBytes = FileUtils.readFileToByteArray(imageFile);
+                String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+                return MessageInitResponse.builder()
+                        .messageId(getM.getMessage_id())
+                        .myChat(false)
+                        .userId(sender.getId())
+                        .receiverId(request.getReceiverId())
+                        .rentStatus(rentStatus)
+                        .productImage(base64Image)
+                        .productId(request.getProductId())
+                        .isRentedToMe(rentedToMe)
+                        .productName(productInformation.getName())
+                        .productPrice(productInformation.getPrice())
+                        .build();
+
+            } catch (IOException e) {
+                // Handle file read or encoding errors
+            }
+
+
+
+
+
             return MessageInitResponse.builder()
-                    .messageId(messagNew.getMessage_id())
+                    .messageId(getM.getMessage_id())
+                    .myChat(false)
+                    .rentStatus(rentStatus)
+                    .isRentedToMe(rentedToMe)
+                    .productId(request.getProductId())
+                    .productName(productInformation.getName())
+                    .productPrice(productInformation.getPrice())
                     .message("메시지 정의되었습니다")
                     .build();
         }
