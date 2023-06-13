@@ -8,13 +8,17 @@ import kr.stylerent.StyleRent.entity.ProductEntity.ProductImage;
 import kr.stylerent.StyleRent.entity.ProductEntity.ProductInformation;
 import kr.stylerent.StyleRent.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FileUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -185,34 +189,46 @@ public class UserDataService {
         // get current user location
         List<Product> products = productRepository.findAllById(currentUser.getId());
         List<ProductDataResponse> productDataResponses = new ArrayList<>();
-        List<ProductImageResponse> productImageResponses = new ArrayList<>();
 
         for(Product p : products){
             Boolean rentStatus = false;
+            Integer renterId = -1;
 
             // check rent status ->
             Optional<Rent> checkProductRent = rentRepository.checkRentStatusByProductId(p.getProductid());
             if(checkProductRent.isPresent()){
                 rentStatus = true;
+                renterId = checkProductRent.get().getRenter().getId();
             }
-            List<ProductImage> productImage = productImageRepository.findAllImagesByProductId(p.getProductid());
-            for(ProductImage pi : productImage){
-                productImageResponses.add(ProductImageResponse.builder()
-                        .path(pi.getImage_path())
-                        .build());
-            }
-            ProductInformation productInformation = productInformationRepository.findInfoById(p.getProductid());
-            if(productInformation != null){
-                productDataResponses.add(ProductDataResponse.builder()
-                        .productId(p.getProductid())
-                        .productName(productInformation.getName())
-                        .productInfo(productInformation.getDescription())
-                                .rentStatus(rentStatus)
-                        .productPrice(productInformation.getPrice())
-                        .imagePath(productImageResponses)
-                        .build());
+
+            try {
+                String base64Image = "";
+                List<ProductImage> productImages = productImageRepository.findAllImagesByProductId(p.getProductid());
+                if (!productImages.isEmpty()) {
+                    File imageFile = new File(productImages.get(0).getImage_path());
+                    byte[] imageBytes = FileUtils.readFileToByteArray(imageFile);
+                    base64Image = Base64.getEncoder().encodeToString(imageBytes);
+                }
+
+                // Use the base64Image as needed (e.g., store in a database, return in a response, etc.)
+
+                ProductInformation productInformation = productInformationRepository.findInfoById(p.getProductid());
+                if(productInformation != null){
+                    productDataResponses.add(ProductDataResponse.builder()
+                            .productId(p.getProductid())
+                            .productName(productInformation.getName())
+                            .productInfo(productInformation.getDescription())
+                            .rentStatus(rentStatus)
+                            .renterId(renterId)
+                            .productPrice(productInformation.getPrice())
+                            .productImage(base64Image)
+                            .build());
+                }
+            } catch (IOException e) {
+                    throw new RuntimeException(e);
             }
         }
+
         return productDataResponses;
     }
 

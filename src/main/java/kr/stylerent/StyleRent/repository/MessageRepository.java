@@ -19,4 +19,7 @@ public interface MessageRepository extends JpaRepository<MessageInit, Integer> {
 
     @Query(value = "select * from message where receiver_id = :receiverId and product_id = :productId", nativeQuery = true)
     Optional<MessageInit> checkMessageByReceiver(Integer receiverId, Integer productId);
+
+    @Query(value = "select * from message where product_id = :productId", nativeQuery = true)
+    List<MessageInit> checkMessageByProductId(Integer productId);
 }

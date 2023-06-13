@@ -57,12 +57,32 @@ public class ProductService {
     @Autowired
     private ProductImageRepository productImageRepository;
 
+    @Autowired
+    private MessageRepository messageRepository;
+
+    @Autowired
+    private ChattingRepository chattingRepository;
+
 
 
     // 옷장 데이터 삭제
     public ProductDeleteResponse productDelete(Integer productId){
         // product info 제거
         productInformationRepository.deleteById(productId);
+
+        // remove messages -> find all messages
+//        List<MessageInit> messageInit = messageRepository.checkMessageByProductId(productId);
+//        for(MessageInit mI : messageInit){
+//            // find all chatting history by message id
+//            List<Chatting> chatting = chattingRepository.findAllByMessageId(mI.getMessage_id());
+//            chattingRepository.deleteAll(chatting);
+//        }
+//        messageRepository.deleteAll(messageInit);
+//
+//        // remove fav items
+//        List<Fav> favs = favRepository.getFavByProductId(productId);
+//        favRepository.deleteAll(favs);
+
 
         // product image 제거
         List<ProductImage> productImages = productImageRepository.findAllImagesByProductId(productId);

@@ -83,6 +83,7 @@ public class MessageService {
                         .receiverName(mI.getUser().getUsername())
                         .senderId(user.getId())
                         .myChat(true)
+                        .isRentedToMe(false)
                         .productName(productInformation.getName())
                         .productPrice(productInformation.getPrice())
                         .rentStatus(rentStatus)
