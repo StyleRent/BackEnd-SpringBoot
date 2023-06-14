@@ -21,6 +21,7 @@ public class ProductDataResponse {
     private Boolean liked;
     private Boolean rentStatus;
     private Double rankAverage;
+    private Integer numsReview;
     private Integer renterId;
     private List<ProductImageResponse> imagePath;
     private String productImage;

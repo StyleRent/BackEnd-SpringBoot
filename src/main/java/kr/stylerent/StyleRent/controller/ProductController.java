@@ -1,6 +1,8 @@
 package kr.stylerent.StyleRent.controller;
 
 import kr.stylerent.StyleRent.dto.Message.MyChatResponse;
+import kr.stylerent.StyleRent.dto.ProductRequest.ProductImageDto;
+import kr.stylerent.StyleRent.dto.ProductRequest.ProductImageUpdateResponse;
 import kr.stylerent.StyleRent.dto.ProductResponse.*;
 import kr.stylerent.StyleRent.dto.ProductRequest.ProductImagePath;
 import kr.stylerent.StyleRent.dto.ProductRequest.ProductInformationDto;
@@ -131,4 +133,18 @@ public class ProductController {
     public ResponseEntity<FavResponse> deleteFavProduct(@PathVariable("productId") Integer productId) {
         return ResponseEntity.ok(productService.deleteFavProduct(productId));
     }
+
+
+
+//    // update product image
+//    @PostMapping("/api/v1/product/updateproductimage")
+//    public ResponseEntity<ProductImageUpdateResponse> updateProductImage(@RequestBody ProductImageDto request) {
+//        return ResponseEntity.ok(productService.updateProductImage(request);
+//    }
+//
+//    // update product image
+//    @PostMapping("/api/v1/product/updateproductinfo")
+//    public ResponseEntity<ProductImageUpdateResponse> updateProductInfo(@RequestBody ProductInformationDto request) {
+//        return ResponseEntity.ok(productService.updateProductInfo());
+//    }
 }

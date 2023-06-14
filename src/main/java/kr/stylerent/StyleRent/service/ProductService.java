@@ -1,6 +1,7 @@
 package kr.stylerent.StyleRent.service;
 
 import jakarta.transaction.Transactional;
+import kr.stylerent.StyleRent.dto.ProductRequest.ProductImageUpdateResponse;
 import kr.stylerent.StyleRent.dto.ProductResponse.*;
 import kr.stylerent.StyleRent.dto.ProductRequest.ProductInformationDto;
 import kr.stylerent.StyleRent.entity.*;
@@ -65,27 +66,36 @@ public class ProductService {
 
 
 
+//    public ProductImageUpdateResponse productImageUpdate(){
+//
+//    }
+
+
+
     // 옷장 데이터 삭제
     public ProductDeleteResponse productDelete(Integer productId){
         // product info 제거
         productInformationRepository.deleteById(productId);
 
         // remove messages -> find all messages
-//        List<MessageInit> messageInit = messageRepository.checkMessageByProductId(productId);
-//        for(MessageInit mI : messageInit){
-//            // find all chatting history by message id
-//            List<Chatting> chatting = chattingRepository.findAllByMessageId(mI.getMessage_id());
-//            chattingRepository.deleteAll(chatting);
-//        }
-//        messageRepository.deleteAll(messageInit);
-//
-//        // remove fav items
-//        List<Fav> favs = favRepository.getFavByProductId(productId);
-//        favRepository.deleteAll(favs);
+        List<MessageInit> messageInit = messageRepository.checkMessageByProductId(productId);
+        for(MessageInit mI : messageInit){
+            // find all chatting history by message id
+            List<Chatting> chatting = chattingRepository.findAllByMessageId(mI.getMessage_id());
+            chattingRepository.deleteAll(chatting);
+        }
+        messageRepository.deleteAll(messageInit);
+
+        // remove fav items
+        List<Fav> favs = favRepository.getFavByProductId(productId);
+        favRepository.deleteAll(favs);
 
 
         // product image 제거
         List<ProductImage> productImages = productImageRepository.findAllImagesByProductId(productId);
+
+        List<Rent> rents = rentRepository.getAllRentsByProductId(productId);
+        rentRepository.deleteAll(rents);
 
         productImageRepository.deleteAll(productImages);
 
@@ -155,6 +165,8 @@ public class ProductService {
 
             // rank average
             List<Rank> rankList = rankRepository.findAllByReceiverId(product.get().getUser().getId());
+//            List<Rank> rankListByProduct = rankRepository.findAllByProductId(productId);
+
             int sum = 0;
             int count = rankList.size();
 
@@ -173,6 +185,7 @@ public class ProductService {
                     .productPrice(productInformation.getPrice())
                     .productName(productInformation.getName())
                     .rankAverage(roundedAverage)
+                    .numsReview(rankList.size())
                     .productInfo(productInformation.getDescription())
                     .imagePath(productImageResponses)
                     .build();

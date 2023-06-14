@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductInformationDto {
-    private Integer productId;
-    private String productName;
-    private String productPrice;
-    private String productDescription;
+public class ProductImageUpdateResponse {
+    private String message;
+    private String error;
 }

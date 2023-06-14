@@ -17,6 +17,9 @@ public interface RankRepository extends JpaRepository<Rank, Integer> {
     @Query(value = "select * from rank where receiver_id = :receiverId", nativeQuery = true)
     List<Rank> findAllByReceiverId(Integer receiverId);
 
-    @Query(value = "select * from rank where user_id = :currentId AND receiver_id = :receiverId", nativeQuery = true)
-    Optional<Rank> checkUnique(Integer currentId, Integer receiverId);
+    @Query(value = "select * from rank where product_id = :productId", nativeQuery = true)
+    List<Rank> findAllByProductId(Integer productId);
+
+    @Query(value = "select * from rank where user_id = :currentId AND receiver_id = :receiverId AND product_id = :productId", nativeQuery = true)
+    Optional<Rank> checkUnique(Integer currentId, Integer receiverId, Integer productId);
 }

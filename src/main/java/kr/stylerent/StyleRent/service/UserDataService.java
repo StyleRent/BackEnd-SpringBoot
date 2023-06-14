@@ -41,6 +41,25 @@ public class UserDataService {
     private final ProductImageRepository productImageRepository;
 
 
+    public UserDataUpdateResponse updateUserName(UserNameDto request){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
+
+        if(!user.getName().equals(request.getUsername())){
+            user.setName(request.getUsername());
+            userRepository.save(user);
+            return UserDataUpdateResponse.builder()
+                    .message("Data successfully updated")
+                    .build();
+        }else{
+            return UserDataUpdateResponse.builder()
+                    .error("Data is equal with your name")
+                    .build();
+        }
+
+    }
+
+
     public OtherUserResponse otherUserResponse(Integer userId){
         User user = userRepository.findById(userId).orElseThrow();
         Optional<ProfileImage> profileImage = profileImageRepository.findById(user.getId());
@@ -102,13 +121,14 @@ public class UserDataService {
 
         return OtherUserResponse.builder()
                 .userId(user.getId())
-                .username(user.getUsername())
+                .username(user.getName())
                 .rankAverage(roundedAverage)
                 .profileImage(profileImage.map(ProfileImage::getData).orElse(null))
                 .products(productDataResponses)
                 .build();
 
     }
+
 
     public Integer getRankAverage(List<RankResponse> rankResponses){
         Integer num = rankResponses.size();
@@ -173,7 +193,7 @@ public class UserDataService {
 
         return UserDataResponse.builder()
                 .userid(user.getId())
-                .username(user.getUsername())
+                .username(user.getName())
                 .email(user.getEmail())
                 .phonenumber(userData.getPhonenumber())
                 .averageRank(sum)

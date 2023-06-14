@@ -50,6 +50,14 @@ public class User implements UserDetails {
         return email;
     }
 
+    public String getName(){
+        return this.username;
+    }
+
+    public void setName(String username){
+        this.username = username;
+    }
+
 
     @Override
     public boolean isAccountNonExpired() {

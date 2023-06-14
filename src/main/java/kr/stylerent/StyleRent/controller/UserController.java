@@ -45,12 +45,14 @@ public class UserController {
     }
 
     @PostMapping("/api/v1/updateuser")
-    public ResponseEntity<UserDataUpdateResponseMessage> setUserData(
-            @RequestBody UserDataDto request
+    public ResponseEntity<UserDataUpdateResponse> setUserData(
+            @RequestBody UserNameDto request
     ) {
 
-        return ResponseEntity.ok(userDataService.updateUserData(request));
+        return ResponseEntity.ok(userDataService.updateUserName(request));
     }
+
+
 
     @GetMapping("/api/v1/getuserdata")
     public ResponseEntity<UserDataResponse> getUserData(){

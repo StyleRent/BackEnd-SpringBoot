@@ -26,6 +26,8 @@ public class LocationService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private RankRepository rankRepository;
 
     @Autowired
     private ProductImageRepository productImageRepository;
@@ -148,7 +150,7 @@ public class LocationService {
                 if (dist <= distanceD && products.size() >= 1 && !user.getId().equals(currentUser.getId())) {
                     nearByUsers.add(NearbyUsersResponse.builder()
                             .distance(Double.toString(dist))
-                            .userName(currentUser.getUsername())
+                            .userName(currentUser.getName())
                             .userId(currentUser.getId())
                                     .profileImage(profileImage.map(ProfileImage::getData).orElse(null))
                             .longtitude(currentLocation.getLongitude().toString())
@@ -177,6 +179,22 @@ public class LocationService {
                 rentStatus = true;
             }
 
+            // rank average
+            List<Rank> rankList = rankRepository.findAllByReceiverId(currentUser.getId());
+//            List<Rank> rankListByProduct = rankRepository.findAllByProductId(p.getProductid());
+
+            int sum = 0;
+            int count = rankList.size();
+
+            for (Rank rank : rankList) {
+                sum += rank.getRank();
+            }
+
+            double average = count > 0 ? (double) sum / count : 0.0;
+            double roundedAverage = Math.round(average * 10.0) / 10.0;
+
+
+
 
             List<ProductImage> productImages = productImageRepository.findAllImagesByProductId(p.getProductid());
             List<ProductImageResponse> productImageResponses = new ArrayList<>(); // Create a new list for each product
@@ -201,6 +219,8 @@ public class LocationService {
                         .productName(productInformation.getName())
                         .productInfo(productInformation.getDescription())
                         .productPrice(productInformation.getPrice())
+                                .rankAverage(roundedAverage)
+                                .numsReview(rankList.size())
                         .liked(liked)
                         .rentStatus(rentStatus)
                         .imagePath(productImageResponses)

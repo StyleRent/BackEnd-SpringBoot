@@ -32,4 +32,8 @@ public class Rank {
     @JoinColumn(name = "receiver_id")
     private User receiver;
 
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
 }
