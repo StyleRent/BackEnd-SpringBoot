@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductImageResponse {
+    private Integer imageId;
     private String path;
     private String message;
     private String error;

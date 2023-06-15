@@ -1,6 +1,7 @@
 package kr.stylerent.StyleRent.service;
 
 import jakarta.transaction.Transactional;
+import kr.stylerent.StyleRent.dto.ProductRequest.ProductImageDto;
 import kr.stylerent.StyleRent.dto.ProductRequest.ProductImageUpdateResponse;
 import kr.stylerent.StyleRent.dto.ProductResponse.*;
 import kr.stylerent.StyleRent.dto.ProductRequest.ProductInformationDto;
@@ -9,6 +10,7 @@ import kr.stylerent.StyleRent.entity.ProductEntity.ProductImage;
 import kr.stylerent.StyleRent.entity.ProductEntity.ProductInformation;
 import kr.stylerent.StyleRent.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
@@ -26,6 +28,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,9 +69,36 @@ public class ProductService {
 
 
 
-//    public ProductImageUpdateResponse productImageUpdate(){
-//
-//    }
+    public ProductImageUpdateResponse productImageRemove(Integer imageId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
+
+        Optional<ProductImage> productImage = productImageRepository.findByImageId(imageId);
+        if(productImage.isPresent()){
+            productImageRepository.delete(productImage.get());
+            return ProductImageUpdateResponse.builder().message("Image successfully deleted!").build();
+        }
+
+
+        return ProductImageUpdateResponse.builder().error("Image error delete!").build();
+    }
+
+    public ProductImageUpdateResponse updateProductInfo(ProductInformationDto request){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
+
+        ProductInformation productInformation = productInformationRepository.findInfoById(request.getProductId());
+        if(!request.getProductName().isEmpty() && !request.getProductName().equals(productInformation.getName())){
+            productInformation.setName(request.getProductName());
+        }
+        if(!request.getProductPrice().isEmpty() && !request.getProductPrice().equals(productInformation.getPrice())){
+            productInformation.setPrice(request.getProductPrice());
+        }if(!request.getProductDescription().isEmpty() && !request.getProductDescription().equals(productInformation.getDescription())){
+            productInformation.setDescription(request.getProductDescription());
+        }
+        productInformationRepository.save(productInformation);
+        return ProductImageUpdateResponse.builder().message("Product information successfully updated!").build();
+    }
 
 
 
@@ -150,9 +180,19 @@ public class ProductService {
 
             List<ProductImage> productImages = productImageRepository.findAllImagesByProductId(product.get().getProductid());
             for(ProductImage pi : productImages){
-                productImageResponses.add(ProductImageResponse.builder()
-                        .path(pi.getImage_path())
-                        .build());
+
+                try {
+                    File imageFile = new File(pi.getImage_path());
+                    byte[] imageBytes = FileUtils.readFileToByteArray(imageFile);
+                    String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+                    productImageResponses.add(ProductImageResponse.builder()
+                            .imageId(pi.getProductid())
+                            .path(base64Image)
+                            .build());
+
+                }catch (Exception err) {
+                    System.out.println(err);
+                }
             }
 
 

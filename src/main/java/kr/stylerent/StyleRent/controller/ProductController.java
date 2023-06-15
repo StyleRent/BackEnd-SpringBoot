@@ -136,15 +136,15 @@ public class ProductController {
 
 
 
-//    // update product image
-//    @PostMapping("/api/v1/product/updateproductimage")
-//    public ResponseEntity<ProductImageUpdateResponse> updateProductImage(@RequestBody ProductImageDto request) {
-//        return ResponseEntity.ok(productService.updateProductImage(request);
-//    }
-//
-//    // update product image
-//    @PostMapping("/api/v1/product/updateproductinfo")
-//    public ResponseEntity<ProductImageUpdateResponse> updateProductInfo(@RequestBody ProductInformationDto request) {
-//        return ResponseEntity.ok(productService.updateProductInfo());
-//    }
+    // update product image
+    @DeleteMapping("/api/v1/product/removeproductimage/{imageId}")
+    public ResponseEntity<ProductImageUpdateResponse> deleteProductImage(@PathVariable("imageId") Integer imageId) {
+        return ResponseEntity.ok(productService.productImageRemove(imageId));
+    }
+
+    // update product image
+    @PostMapping("/api/v1/product/updateproductinfo")
+    public ResponseEntity<ProductImageUpdateResponse> updateProductInfo(@RequestBody ProductInformationDto request) {
+        return ResponseEntity.ok(productService.updateProductInfo(request));
+    }
 }
