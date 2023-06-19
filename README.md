@@ -57,15 +57,17 @@
 - [Acknowledgements](#gem-acknowledgements)
 
 ## :student: Contributors
+<img width="329" alt="Screen Shot 2023-06-19 at 18 50 39" src="https://github.com/StyleRent/BackEnd-SpringBoot/assets/38793933/7fd1a9fd-eae6-475e-9855-ae580566ca9c">
+
 
 ### BackEnd Developers!
 <table>
   <tbody>
     <tr>
       <td align="center"><a href="https://github.com/Alisherka7"><img src="https://user-images.githubusercontent.com/38793933/230622299-8c1a7e93-eac6-4aea-8fe9-afd77f5f2a7a.png" width="100px;" alt="Kent C. Dodds"/><br /><sub><b>Alisherka7</b></sub></a></td>
-      <td align="center"><a href="https://github.com/ddabi"><img src="https://user-images.githubusercontent.com/38793933/230624263-14f9f6b9-66d4-472d-8dfb-5c799a816b6f.png" width="100px;" alt="ddabi"/><br /><sub><b>ddabi</b></sub></a></td>
+      <td align="center"><a href="https://github.com/ddabi"><img src="https://github.com/StyleRent/BackEnd-SpringBoot/assets/38793933/bd4b8677-8761-465e-b143-db78984320be" width="100px;" alt="ddabi"/><br /><sub><b>ddabi</b></sub></a></td>
       <td align="center"><a href="https://github.com/seongbokim"><img src="https://user-images.githubusercontent.com/38793933/230624678-6835a23a-073e-476c-a51e-80f438d99531.png" width="100px;" alt="seongbokim"/><br /><sub><b>seongbokim</b></sub></a></td>
-      <td align="center"><a href="https://github.com/Cygnus49"><img src="https://user-images.githubusercontent.com/38793933/230622535-fe2fcd6d-d4ed-4cd6-9551-1a5fe49c6d14.png" width="100px;" alt="Kent C. Dodds"/><br /><sub><b>Cygnus49</b></sub></a></td>
+      <td align="center"><a href="https://github.com/Cygnus49"><img src="https://github.com/StyleRent/BackEnd-SpringBoot/assets/38793933/dfc08db8-53d9-4094-a01e-c55a1bba9617" width="100px;" alt="Kent C. Dodds"/><br /><sub><b>Cygnus49</b></sub></a></td>
       </tr>
    </tbody>
 </table>    
@@ -76,8 +78,8 @@
        <tr>
       <td align="center"><a href="https://github.com/Kumushai9919"><img src="https://user-images.githubusercontent.com/38793933/230624905-13f1f3df-aeaf-4134-92f5-d8aa27f97de2.png" width="100px;" alt="Kumushai9919"/><br /><sub><b>Kumushai9919</b></sub></a></td>
       <td align="center"><a href="https://github.com/honghyoeun"><img src="https://user-images.githubusercontent.com/38793933/230625176-7a9e8bf2-9ef8-46e8-b6f9-4a35605f2147.png" width="100px;" alt="honghyoeun"/><br /><sub><b>honghyoeun</b></sub></a></td>
-      <td align="center"><a href="https://github.com/dixk3458"><img src="https://user-images.githubusercontent.com/38793933/230625300-23c0e68b-85fc-4407-82ad-cfef6fed9a94.png" width="100px;" alt="dixk3458"/><br /><sub><b>dixk3458</b></sub></a></td>
-      <td align="center"><a href="https://github.com/jimseokbea"><img src="https://user-images.githubusercontent.com/38793933/230625434-dfce7dbb-0b2f-46cb-a34d-f1cc8c7f7738.png" width="100px;" alt="jimseokbea"/><br /><sub><b>jimseokbea</b></sub></a></td>
+      <td align="center"><a href="https://github.com/dixk3458"><img src="https://github.com/StyleRent/BackEnd-SpringBoot/assets/38793933/7fd1a9fd-eae6-475e-9855-ae580566ca9c" width="100px;" alt="dixk3458"/><br /><sub><b>dixk3458</b></sub></a></td>
+      <td align="center"><a href="https://github.com/jimseokbea"><img src="https://github.com/StyleRent/BackEnd-SpringBoot/assets/38793933/42b0514c-7ffd-4cf7-a14a-8222ba1bdd36" width="100px;" alt="jimseokbea"/><br /><sub><b>jimseokbea</b></sub></a></td>
       </tr>
   </tbody>
 </table>
