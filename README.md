@@ -57,9 +57,6 @@
 - [Acknowledgements](#gem-acknowledgements)
 
 ## :student: Contributors
-<img width="329" alt="Screen Shot 2023-06-19 at 18 50 39" src="https://github.com/StyleRent/BackEnd-SpringBoot/assets/38793933/7fd1a9fd-eae6-475e-9855-ae580566ca9c">
-
-
 ### BackEnd Developers!
 <table>
   <tbody>
